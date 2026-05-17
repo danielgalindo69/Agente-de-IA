@@ -1,0 +1,30 @@
+# Entornos virtuales (venv)
+venv/
+.venv/
+env/
+server/venv/
+client/venv/
+
+# Variables de entorno (Seguridad)
+.env
+client/.env
+server/.env
+
+# Python cache y compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs y Editores de texto
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Logs y bases de datos locales
+*.log
+*.sqlite3
+db.sqlite3
