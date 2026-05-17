@@ -21,7 +21,7 @@ Hemos creado y configurado dos entornos virtuales independientes para mantener e
 
 ## 🔑 Paso 1: Configurar tu API Key de Google Gemini
 
-El agente utiliza el modelo de lenguaje de Google Gemini (`google/gemini-2.5-flash`). Para que pueda responder, necesitas configurar tu clave de API:
+El agente utiliza el modelo de lenguaje de Google Gemini (`google/gemini-flash-latest`). Para que pueda responder, necesitas configurar tu clave de API:
 
 1. Abre el archivo [client/.env](file:///c:/Users/jonns/OneDrive/Escritorio/Agente%20de%20ia/agente_mirascope_mcp_interno_stdio%20%28copia%29/client/.env).
 2. Modifica la línea para añadir tu clave de API obtenida de [Google AI Studio](https://aistudio.google.com/):

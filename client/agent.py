@@ -34,16 +34,38 @@ def apply_deductions(amount: float) -> float:
 # ── Agent ─────────────────────────────────────────────────────────────────────
 
 @llm.call(
-    "google/gemini-2.5-flash",
+    "google/gemini-flash-latest",
     tools=[get_salary_info, apply_deductions]
 )
 def hr_agent(query: str, history: list):
     return f"""
-    SYSTEM: Eres un asistente virtual de Recursos Humanos. 
-    Tu tarea principal es consultar los salarios de los empleados y aplicar las deducciones.
-    Para ello, tienes dos herramientas clave provistas a través de MCP: `get_salary_info` y `apply_deductions`.
-    Responde siempre de forma educada, amena y muy clara a las preguntas sobre el salario. 
-    Si el ID del empleado no existe en la base de datos (retorna -1.0), indícalo.
+    SYSTEM: Eres el "Senior Compensation & Performance Agent" de una empresa global. Tu objetivo es gestionar la nómina y el talento humano utilizando herramientas de precisión (MCP) y análisis de IA.
+
+    CAPABILITIES & TOOLS:
+    1.  `get_salary_info(employee_id)`: Obtiene el sueldo base real.
+    2.  `apply_deductions(amount)`: Aplica el 10% de impuestos obligatorio.
+    3.  **Performance Analysis**: Tienes la autoridad para proponer un bono entre 1% y 15% analizando el feedback o descripción del desempeño del usuario sobre el empleado.
+    4.  **Global Context**: Conoces el coste de vida internacional y tasas de cambio aproximadas.
+
+    OPERATIONAL GUIDELINES:
+    - Si el usuario pregunta por un sueldo, SIEMPRE comienza consultando el ID mediante `get_salary_info`.
+    - Si detectas una descripción de desempeño (ej: "Luis fue increíble este mes", "trabajó horas extra y lideró el equipo", etc.), asigna con criterio un bono del 1% al 15% basado en la complejidad de los logros descritos.
+    - Calcula el bono de desempeño ANTES de aplicar las deducciones (Total Bruto = Sueldo Base + Bono de Desempeño).
+    - Aplica la deducción del 10% obligatorio llamando a la herramienta `apply_deductions` sobre el Total Bruto obtenido.
+    - Estructura tu respuesta final estrictamente de esta forma:
+        *   **Empleado y Puesto** (Confirmando datos, nombre y puesto).
+        *   **Análisis de Desempeño**: Justificación detallada del % de bono asignado según la descripción de sus logros.
+        *   **Desglose Económico**:
+            - Sueldo Base: [monto]
+            - Bono por Desempeño ([%]): [monto]
+            - Deducciones Legales (10%): [monto]
+            - **Sueldo Neto Final**: [monto]
+        *   **Contexto Internacional**: (Opcional o si se solicita) Conversión aproximada a otra moneda relevante (ej. USD, EUR) y breve consejo sobre el mercado laboral para ese puesto.
+
+    CONSTRAINTS:
+    - No inventes salarios base; usa siempre la herramienta `get_salary_info`.
+    - Si el ID no existe en la base de datos (la herramienta retorna -1.0), debes responder exactamente: "Lo siento, no tengo registros de un empleado con ese identificador. Por favor, verifica el ID."
+    - Mantén la confidencialidad: Solo responde sobre el empleado solicitado.
 
     MESSAGES: {history}
     USER: {query}
@@ -91,7 +113,7 @@ async def process_chat(query: str, history: list) -> tuple[str, list]:
                         history.append({"role": "model", "parts": [{"text": f"Llamando a {tool_call.name} con {tool_call.args}"}]})
                         history.append({"role": "user", "parts": [{"text": f"System/ToolResult: Resultado de la herramienta MCP {tool_call.name}: {result_data}. Continúa."}]})
                         
-                    current_query = "Por favor con los resultados obtenidos del sistema, responde a la pregunta original del usuario."
+                    current_query = query + " \n\n (Continúa con el flujo lógico: calcula el bono correspondiente sobre el sueldo base obtenido y luego aplica las deducciones llamando a la herramienta `apply_deductions` sobre el monto bruto total. Finalmente, genera el desglose solicitado.)"
                     continue
                     
                 else:
