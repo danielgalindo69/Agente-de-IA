@@ -3,8 +3,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from agent import process_chat
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="frontend", static_url_path="")
 CORS(app)
+
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 @app.route('/chat', methods=['POST'])
 def chat_endpoint():

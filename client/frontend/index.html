@@ -7,27 +7,101 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="chat-container">
-        <header class="chat-header">
-            <div class="avatar">🤖</div>
-            <div class="header-info">
-                <h1>Asistente RRHH</h1>
-                <p>En línea</p>
-            </div>
-        </header>
+    <!-- Canvas de agujero de gusano animado -->
+    <canvas id="wormhole-canvas"></canvas>
 
-        <div class="chat-messages" id="chat-messages">
-            <div class="message bot">
-                <div class="bubble">
-                    Hola, soy el asistente experto de Recursos Humanos. Puedes preguntarme el sueldo de un empleado por ID (ej. EMP001, EMP002, EMP003) y su sueldo neto tras impuestos.
+    <!-- Overlay del Tutorial Interactivo -->
+    <div class="tutorial-overlay" id="tutorial-overlay">
+        <div class="tutorial-deck-container">
+            <div class="tutorial-deck" id="tutorial-deck">
+                <!-- Tarjeta 1: Resumen -->
+                <div class="tutorial-card card-front" data-index="0">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="card-icon">🤖</div>
+                        <h2>Senior Compensation Agent</h2>
+                        <p class="card-desc">Bienvenido a tu panel de Recursos Humanos inteligente de última generación.</p>
+                        <p class="card-body-text">
+                            Este asistente utiliza la API de Google Gemini en sinergia con el protocolo en tiempo real <strong>MCP (Model Context Protocol)</strong>.
+                            Diseñado para auditar nóminas, simular bonos por méritos y proyectar salarios globales de forma segura y con criterio corporativo.
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="step-indicator">1 de 3</span>
+                        <button class="next-card-btn">Siguiente ➔</button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Funcionalidades -->
+                <div class="tutorial-card card-middle" data-index="1">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="card-icon">⚡</div>
+                        <h2>Funcionalidades Clave</h2>
+                        <ul class="features-list">
+                            <li><strong>🔍 Consulta MCP Real:</strong> Obtiene sueldos base reales de empleados directo del servidor MCP sin invenciones.</li>
+                            <li><strong>📈 Análisis de Mérito:</strong> Evalúa el rendimiento y propone autónomamente un bono del <strong>1% al 15%</strong>.</li>
+                            <li><strong>🧾 Deducciones Fiscales:</strong> Aplica el 10% obligatorio sobre el monto bruto total.</li>
+                            <li><strong>🌐 Contexto Internacional:</strong> Convierte divisas y ofrece consejos clave sobre el mercado de talento global.</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <span class="step-indicator">2 de 3</span>
+                        <button class="next-card-btn">Siguiente ➔</button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 3: Ejemplo Práctico -->
+                <div class="tutorial-card card-back" data-index="2">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="card-icon">💡</div>
+                        <h2>Ejemplo de Consulta</h2>
+                        <p class="card-desc">Escribe de manera natural y conversacional. El agente ejecutará las herramientas secuencialmente.</p>
+                        <div class="example-box" id="tutorial-example-box" style="cursor: pointer;" title="Haz clic para copiar">
+                            "Ana (EMP001) lidero el equipo de manera increible, resolviendo tres incidentes criticos. Calcula su neto."
+                        </div>
+                        <p class="card-body-text" style="font-size: 11px; margin-top: 10px; color: #94a3b8; text-align: center;">
+                            Haz clic en la caja de texto para autocompletar el ejemplo.
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="step-indicator">3 de 3</span>
+                        <button class="start-btn" id="start-experience-btn">¡Comenzar Experiencia! 🚀</button>
+                    </div>
                 </div>
             </div>
+            <button class="skip-btn" id="skip-tutorial-btn">Omitir Tutorial</button>
         </div>
+    </div>
 
-        <form class="chat-input" id="chat-form">
-            <input type="text" id="user-input" placeholder="Escribe tu mensaje aquí..." autocomplete="off" required>
-            <button type="submit">Enviar</button>
-        </form>
+    <!-- Canvas de estrellas explosivas interactivo -->
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="chat-wrapper">
+        <div class="chat-container">
+            <header class="chat-header">
+                <div class="avatar">🤖</div>
+                <div class="header-info" style="flex: 1;">
+                    <h1>Asistente RRHH</h1>
+                    <p>En línea</p>
+                </div>
+                <button class="header-tutorial-btn" id="header-tutorial-btn" title="Ver Tutorial">❓ Tutorial</button>
+            </header>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot">
+                    <div class="bubble">
+                        Hola, soy el asistente experto de Recursos Humanos. Puedes preguntarme el sueldo de un empleado por ID (ej. EMP001, EMP002, EMP003) y su sueldo neto tras impuestos.
+                    </div>
+                </div>
+            </div>
+
+            <form class="chat-input" id="chat-form">
+                <input type="text" id="user-input" placeholder="Escribe tu mensaje aquí..." autocomplete="off" required>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
     </div>
 
     <script src="app.js"></script>
